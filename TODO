@@ -1,0 +1,23 @@
+To take into acount:
+- Patterns and implementation details used here will set the standards for the rest of our user interface.
+- Strictly typed
+- Naming
+- Client side state management
+- Consider rendering performance
+- Error handling (web sockets)
+- Should be able to handle high data input
+- Testing
+
+Data:
+[] Implement connection with WebSocket
+[] Process first snapshot of data
+[] Process following orderbook's deltas
+[] Part 2: Change grouping based on market ticket size
+[] Part 3: Subscribe to different market (review grouping)
+[] Part 4: Force Websocket feed to throw and error and handle it
+
+UI:
+[] Implement table
+[] Implement row showing total
+[] Change depth visualizer colors and alignment based on asks vs bids
+[] Change order of columns based on asks vs bids
