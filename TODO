@@ -9,8 +9,8 @@ To take into acount:
 - Testing
 
 Data:
-[] Implement connection with WebSocket
-[] Process first snapshot of data
+[OK] Implement connection with WebSocket
+[OK] Process first snapshot of data
 [] Process following orderbook's deltas
 [] Part 2: Change grouping based on market ticket size
 [] Part 3: Subscribe to different market (review grouping)
