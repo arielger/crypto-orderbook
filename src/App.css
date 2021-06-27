@@ -1,0 +1,20 @@
+:root {
+  --site-background-color: #242d3c;
+  --component-background-color: #111827;
+
+  --text-color: #c6c9cd;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.App {
+  background-color: var(--site-background-color);
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
