@@ -7,7 +7,7 @@ import OrdersTable from "./OrdersTable";
 import classes from "./OrderBook.module.css";
 
 export default function OrderBook() {
-  const { bookData } = useBookConnection();
+  const { bids, asks } = useBookConnection();
 
   return (
     <div className={classes.container}>
@@ -20,8 +20,8 @@ export default function OrderBook() {
         </select>
       </div>
       <div className={classes.tablesContainer}>
-        <OrdersTable type="bids" orders={bookData.bids} />
-        <OrdersTable type="asks" orders={bookData.asks} />
+        <OrdersTable type="bids" orders={bids} />
+        <OrdersTable type="asks" orders={asks} />
       </div>
     </div>
   );

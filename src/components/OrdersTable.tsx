@@ -2,7 +2,7 @@ import React from "react";
 
 import classes from "./OrdersTable.module.css";
 
-type Order = [number, number]; // [amount, price]
+type Order = [string, number]; // [amount, price]
 
 function addTotalToOrders(orders: Order[]) {
   let currentTotal = 0;
@@ -65,7 +65,7 @@ export default function OrdersTable({
               <td>{numberFormatter.format(total)}</td>
               <td>{numberFormatter.format(amount)}</td>
               <td className={classes.priceCell}>
-                {priceFormatter.format(price)}
+                {priceFormatter.format(Number(price))}
               </td>
             </tr>
           );

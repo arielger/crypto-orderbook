@@ -1,18 +1,67 @@
 import { useEffect, useState } from "react";
 
-type Order = [number, number]; // [price, size]
+type OrdersObj = {
+  [price: number]: number;
+};
 
 type OrdersState = {
+  asks: OrdersObj;
+  bids: OrdersObj;
+};
+
+type Order = [number, number]; // [price, size]
+
+type BookMessage = {
+  feed: string;
   asks: Order[];
   bids: Order[];
+  event:
+    | "subscribed"
+    | "subscribed_failed"
+    | "unsubscribed"
+    | "unsubscribed_failed";
 };
+
+function processInitialOrders(orders: Order[]) {
+  return Object.fromEntries(orders);
+}
+
+export function processOrdersDeltas(
+  originalList: OrdersObj,
+  deltas: Order[]
+): OrdersObj {
+  // @TODO: Error handling / handle bad structure
+  // @TODO: Review performance
+  const newList = { ...originalList };
+
+  deltas.forEach(([price, size]) => {
+    if (size === 0) {
+      delete newList[price];
+    } else if (size > 0) {
+      newList[price] = size;
+    }
+  });
+
+  return newList;
+}
+
+export function handleDeltas(
+  originalBook: OrdersState,
+  asks: Order[],
+  bids: Order[]
+): OrdersState {
+  return {
+    asks: processOrdersDeltas(originalBook.asks, asks),
+    bids: processOrdersDeltas(originalBook.bids, bids),
+  };
+}
 
 function useBookConnection() {
   let socket: WebSocket;
 
   const [bookData, setBookData] = useState<OrdersState>({
-    asks: [],
-    bids: [],
+    asks: {},
+    bids: {},
   });
 
   useEffect(() => {
@@ -30,30 +79,32 @@ function useBookConnection() {
     });
 
     socket.addEventListener("message", (event) => {
-      const messageData: {
-        feed: string;
-        asks: Order[];
-        bids: Order[];
-      } = JSON.parse(event.data);
+      const messageData: BookMessage = JSON.parse(event.data);
 
       console.log("messageData", messageData);
 
-      // Initialize book data with snapshot
-      if (messageData.feed === "book_ui_1_snapshot") {
+      if (messageData.event === "subscribed") {
+        console.log("Subscribed succesfully");
+      } else if (messageData.event) {
+        // @TODO: Handle all possible events
+      } else if (messageData.feed === "book_ui_1_snapshot") {
+        // Initialize book data with snapshot
         setBookData({
-          asks: messageData.asks,
-          bids: messageData.bids,
+          asks: processInitialOrders(messageData.asks),
+          bids: processInitialOrders(messageData.bids),
         });
+      } else if (messageData.feed === "book_ui_1") {
+        setBookData((originalBookData) =>
+          handleDeltas(originalBookData, messageData.asks, messageData.bids)
+        );
       }
-
-      // @TODO: Handle deltas to update the orderbook
-      // if (messageData.feed === "book_ui_1") {
-      //   setBookData(handleDeltas(bookData, messageData.asks, messageData.bids));
-      // }
     });
   }, []);
 
-  return { bookData };
+  return {
+    asks: Object.entries(bookData.asks),
+    bids: Object.entries(bookData.bids),
+  };
 }
 
 export default useBookConnection;
