@@ -1,35 +1,16 @@
 import { useEffect, useState } from "react";
 
-type OrderInput = [number, number];
+type Order = [number, number]; // [price, size]
 
-type Order = {
-  price: number;
-  amount: number;
-  total: number;
+type OrdersState = {
+  asks: Order[];
+  bids: Order[];
 };
 
-function processOrders(orders: OrderInput[]): Order[] {
-  let total = 0;
-
-  return orders.map(([price, amount]) => {
-    total = total + amount;
-
-    return {
-      price,
-      amount,
-      total: total,
-    };
-  });
-}
-
-// @TODO: Complete hook
 function useBookConnection() {
   let socket: WebSocket;
 
-  const [bookData, setBookData] = useState<{
-    asks: Order[];
-    bids: Order[];
-  }>({
+  const [bookData, setBookData] = useState<OrdersState>({
     asks: [],
     bids: [],
   });
@@ -49,15 +30,26 @@ function useBookConnection() {
     });
 
     socket.addEventListener("message", (event) => {
-      const messageData = JSON.parse(event.data);
+      const messageData: {
+        feed: string;
+        asks: Order[];
+        bids: Order[];
+      } = JSON.parse(event.data);
+
+      console.log("messageData", messageData);
 
       // Initialize book data with snapshot
       if (messageData.feed === "book_ui_1_snapshot") {
         setBookData({
-          asks: processOrders(messageData.asks),
-          bids: processOrders(messageData.bids),
+          asks: messageData.asks,
+          bids: messageData.bids,
         });
       }
+
+      // @TODO: Handle deltas to update the orderbook
+      // if (messageData.feed === "book_ui_1") {
+      //   setBookData(handleDeltas(bookData, messageData.asks, messageData.bids));
+      // }
     });
   }, []);
 

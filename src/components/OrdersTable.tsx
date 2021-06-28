@@ -2,12 +2,25 @@ import React from "react";
 
 import classes from "./OrdersTable.module.css";
 
-// @TODO: Review type
-type Order = {
-  total: number;
-  amount: number;
-  price: number;
-};
+type Order = [number, number]; // [amount, price]
+
+function addTotalToOrders(orders: Order[]) {
+  let currentTotal = 0;
+
+  const ordersWithTotal = orders.map(([price, amount]) => {
+    currentTotal = currentTotal + amount;
+    return {
+      price,
+      amount,
+      total: currentTotal,
+    };
+  });
+
+  return {
+    ordersWithTotal,
+    tableTotal: currentTotal,
+  };
+}
 
 export default function OrdersTable({
   type,
@@ -20,10 +33,9 @@ export default function OrdersTable({
   const priceFormatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
   });
-
   const isBidsTable = type === "bids";
-  // @TODO: Review what happens if there are no orders
-  const tableTotal = orders[orders.length - 1].total;
+
+  const { ordersWithTotal, tableTotal } = addTotalToOrders(orders);
 
   return (
     <table className={`${classes.table} ${classes[type]}`}>
@@ -35,7 +47,7 @@ export default function OrdersTable({
         </tr>
       </thead>
       <tbody>
-        {orders.map(({ total, amount, price }) => {
+        {ordersWithTotal.map(({ total, amount, price }) => {
           const totalPercentage = `${(total / tableTotal) * 100}%`;
 
           return (

@@ -7,7 +7,7 @@ import OrdersTable from "./OrdersTable";
 import classes from "./OrderBook.module.css";
 
 export default function OrderBook() {
-  // const { bookData } = useBookConnection();
+  const { bookData } = useBookConnection();
 
   return (
     <div className={classes.container}>
@@ -19,48 +19,9 @@ export default function OrderBook() {
           <option value="2.5">Group 2.5</option>
         </select>
       </div>
-      {/* @TODO: Replace with real data */}
       <div className={classes.tablesContainer}>
-        <OrdersTable
-          type="bids"
-          orders={[
-            {
-              total: 2300,
-              amount: 2300,
-              price: 47341,
-            },
-            {
-              total: 2800,
-              amount: 500,
-              price: 47340.5,
-            },
-            {
-              total: 3300,
-              amount: 500,
-              price: 47339.5,
-            },
-          ]}
-        />
-        <OrdersTable
-          type="asks"
-          orders={[
-            {
-              total: 2300,
-              amount: 2300,
-              price: 47363.5,
-            },
-            {
-              total: 7036,
-              amount: 4736,
-              price: 47364,
-            },
-            {
-              total: 13426,
-              amount: 6390,
-              price: 47364.5,
-            },
-          ]}
-        />
+        <OrdersTable type="bids" orders={bookData.bids} />
+        <OrdersTable type="asks" orders={bookData.asks} />
       </div>
     </div>
   );
