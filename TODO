@@ -18,9 +18,9 @@ Data:
 
 UI:
 [OK] Add styles for orderbook header
-[] Implement table
-[] Implement row showing total
-[] Change depth visualizer colors and alignment based on asks vs bids
+[OK] Implement table
+[OK] Implement row showing total
+[OK] Change depth visualizer colors and alignment based on asks vs bids
 [] Change order of columns based on asks vs bids
 
 [] Move colors to variables

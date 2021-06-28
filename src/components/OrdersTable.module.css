@@ -1,11 +1,16 @@
 .table {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   text-align: right;
+  border-spacing: 0;
 }
 
 .table th,
 .table td {
   flex: 1 1 0;
+}
+
+.table tr {
+  padding: 0 1rem;
 }
 
 .table.bids tr {
