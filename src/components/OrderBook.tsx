@@ -20,44 +20,48 @@ export default function OrderBook() {
         </select>
       </div>
       {/* @TODO: Replace with real data */}
-      <OrdersTable
-        orders={[
-          {
-            total: 2300,
-            amount: 2300,
-            price: 47341,
-          },
-          {
-            total: 2800,
-            amount: 500,
-            price: 47340.5,
-          },
-          {
-            total: 3300,
-            amount: 500,
-            price: 47339.5,
-          },
-        ]}
-      />
-      <OrdersTable
-        orders={[
-          {
-            total: 2300,
-            amount: 2300,
-            price: 47363.5,
-          },
-          {
-            total: 7036,
-            amount: 4736,
-            price: 47364,
-          },
-          {
-            total: 13426,
-            amount: 6390,
-            price: 47364.5,
-          },
-        ]}
-      />
+      <div className={classes.tablesContainer}>
+        <OrdersTable
+          type="bids"
+          orders={[
+            {
+              total: 2300,
+              amount: 2300,
+              price: 47341,
+            },
+            {
+              total: 2800,
+              amount: 500,
+              price: 47340.5,
+            },
+            {
+              total: 3300,
+              amount: 500,
+              price: 47339.5,
+            },
+          ]}
+        />
+        <OrdersTable
+          type="asks"
+          orders={[
+            {
+              total: 2300,
+              amount: 2300,
+              price: 47363.5,
+            },
+            {
+              total: 7036,
+              amount: 4736,
+              price: 47364,
+            },
+            {
+              total: 13426,
+              amount: 6390,
+              price: 47364.5,
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 }

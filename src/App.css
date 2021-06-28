@@ -1,8 +1,10 @@
 :root {
+  /* Colors */
   --site-background-color: #242d3c;
   --component-background-color: #111827;
 
-  --text-color: #c6c9cd;
+  --main-text-color: rgba(255, 255, 255, 0.9);
+  --subtitle-text-color: rgba(255, 255, 255, 0.6);
 }
 
 html,
@@ -17,4 +19,5 @@ body,
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  color: var(--main-text-color);
 }

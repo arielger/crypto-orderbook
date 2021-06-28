@@ -1,0 +1,32 @@
+.table {
+  flex: 1 1 auto;
+  text-align: right;
+}
+
+.table th,
+.table td {
+  flex: 1 1 0;
+}
+
+.table.bids tr {
+  display: flex;
+  flex-direction: row;
+}
+
+.table.asks tr {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.tableHeader th {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: normal;
+  font-size: 0.85rem;
+  padding: 0.25rem 0;
+  color: var(--subtitle-text-color);
+}
+
+.priceCell {
+  color: #33a575;
+}
