@@ -9,6 +9,11 @@
   cursor: pointer;
 }
 
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .button.main {
   background-color: #5740d9;
 }
