@@ -1,3 +1,3 @@
-export function roundToNearest(value: number, interval: number) {
+export function roundDownToInterval(value: number, interval: number) {
   return Math.floor(value / interval) * interval;
 }

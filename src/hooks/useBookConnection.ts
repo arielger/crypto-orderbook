@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { roundToNearest } from "../utils";
+import { roundDownToInterval } from "../utils";
 
 import { Markets, ConnectionStatusEnum } from "../types";
 
@@ -69,7 +69,7 @@ export function processOrdersOutput(
     // Multiply indexes by 100 to use integer indices in the object instead of decimals
     // and preserve ordering when traversing
     // https://2ality.com/2015/10/property-traversal-order-es6.html
-    const roundedPrice = roundToNearest(Number(price), tickSize) * 100;
+    const roundedPrice = roundDownToInterval(Number(price), tickSize) * 100;
     ordersByTickSize[roundedPrice] = ordersByTickSize[roundedPrice]
       ? ordersByTickSize[roundedPrice] + size
       : size;
