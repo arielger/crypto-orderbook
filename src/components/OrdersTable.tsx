@@ -2,7 +2,7 @@ import React from "react";
 
 import classes from "./OrdersTable.module.css";
 
-type Order = [string, number]; // [amount, price]
+type Order = [number, number]; // [amount, price]
 
 function addTotalToOrders(orders: Order[]) {
   let currentTotal = 0;
