@@ -11,16 +11,20 @@
 
 .table tr {
   padding: 0 1rem;
-}
-
-.table.bids tr {
   display: flex;
   flex-direction: row;
 }
 
-.table.asks tr {
-  display: flex;
-  flex-direction: row-reverse;
+@media (max-width: 576px) {
+  .table.bids thead {
+    visibility: hidden;
+  }
+}
+
+@media (min-width: 576px) {
+  .table.bids tr {
+    flex-direction: row-reverse;
+  }
 }
 
 .tableHeader th {

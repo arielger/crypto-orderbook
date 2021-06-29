@@ -13,6 +13,15 @@ body,
   height: 100%;
 }
 
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 .App {
   background-color: var(--site-background-color);
   min-height: 100%;

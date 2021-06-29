@@ -48,8 +48,8 @@ export default function OrderBook() {
   ].includes(connectionStatus);
 
   return (
-    <div>
-      <div className={classes.container}>
+    <div className={classes.container}>
+      <div className={classes.backgroundContainer}>
         <div className={classes.header}>
           <h1 className={classes.title}>Order Book ({selectedMarket})</h1>
           <select

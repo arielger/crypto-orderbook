@@ -1,4 +1,5 @@
 import React from "react";
+import { useWindowWidth } from "@react-hook/window-size";
 
 import classes from "./OrdersTable.module.css";
 
@@ -29,6 +30,8 @@ export default function OrdersTable({
   type: "bids" | "asks";
   orders: Order[];
 }) {
+  const windowWidth = useWindowWidth();
+
   const numberFormatter = new Intl.NumberFormat();
   const priceFormatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
@@ -41,9 +44,9 @@ export default function OrdersTable({
     <table className={`${classes.table} ${classes[type]}`}>
       <thead className={classes.tableHeader}>
         <tr>
-          <th>Total</th>
-          <th>Size</th>
           <th>Price</th>
+          <th>Size</th>
+          <th>Total</th>
         </tr>
       </thead>
       <tbody>
@@ -56,17 +59,19 @@ export default function OrdersTable({
               style={{
                 background: `
                   linear-gradient(
-                    ${isBidsTable ? "to left" : "to right"},
+                    ${
+                      !isBidsTable && windowWidth > 576 ? "to right" : "to left"
+                    },
                     ${isBidsTable ? "#3e212c" : "#103839"} ${totalPercentage},
                     transparent ${totalPercentage}
                   )`,
               }}
             >
-              <td>{numberFormatter.format(total)}</td>
-              <td>{numberFormatter.format(amount)}</td>
               <td className={classes.priceCell}>
                 {priceFormatter.format(Number(price))}
               </td>
+              <td>{numberFormatter.format(amount)}</td>
+              <td>{numberFormatter.format(total)}</td>
             </tr>
           );
         })}
