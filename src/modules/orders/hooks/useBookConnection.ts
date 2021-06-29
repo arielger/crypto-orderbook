@@ -112,7 +112,7 @@ function useBookConnection({
     );
   }
 
-  function handleNewMessage(event) {
+  function handleNewMessage(event: MessageEvent) {
     const messageData: BookMessage = JSON.parse(event.data);
 
     if (messageData.event === "subscribed") {
