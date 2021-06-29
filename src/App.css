@@ -1,27 +1,3 @@
-:root {
-  /* Colors */
-  --site-background-color: #242d3c;
-  --component-background-color: #111827;
-
-  --main-text-color: rgba(255, 255, 255, 0.9);
-  --subtitle-text-color: rgba(255, 255, 255, 0.6);
-}
-
-html,
-body,
-#root {
-  height: 100%;
-}
-
-html {
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
 .App {
   background-color: var(--site-background-color);
   min-height: 100%;
