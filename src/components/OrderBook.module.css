@@ -33,7 +33,8 @@
   padding: 0.25rem;
   justify-content: center;
   position: relative;
-  min-height: 10rem;
+  height: 45rem;
+  overflow-y: scroll;
 }
 
 @keyframes spinner {

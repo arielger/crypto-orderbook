@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BsArrowUpDown } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
+import { IoWarningOutline } from "react-icons/io5";
 
 import useBookConnection from "../hooks/useBookConnection";
 
@@ -23,7 +24,7 @@ export default function OrderBook() {
   );
   const tickSizes = tickSizesByMarket[selectedMarket];
   const [tickSize, setTickSize] = useState(tickSizes[0]);
-  const { connectionStatus, bids, asks } = useBookConnection({
+  const { connectionStatus, bids, asks, killFeed } = useBookConnection({
     tickSize,
     selectedMarket,
   });
@@ -83,7 +84,12 @@ export default function OrderBook() {
           text="Toggle Feed"
           onClick={handleToggleFeed}
         />
-        <Button icon={<BsArrowUpDown />} text="Kill Feed" />
+        <Button
+          type="danger"
+          icon={<IoWarningOutline />}
+          text="Kill Feed"
+          onClick={killFeed}
+        />
       </div>
     </div>
   );

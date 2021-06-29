@@ -154,10 +154,15 @@ function useBookConnection({
     };
   }, [selectedMarket]);
 
+  function killFeed() {
+    // socket.send("ERROR");
+  }
+
   return {
     connectionStatus,
     asks: processOrdersOutput(bookData.asks, tickSize),
     bids: processOrdersOutput(bookData.bids, tickSize),
+    killFeed,
   };
 }
 

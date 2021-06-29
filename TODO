@@ -15,7 +15,7 @@ Data:
 [OK] Part 2: Change grouping based on market tick size
 [] Part 3: Subscribe to different market (review grouping)
     [OK] Add variable tick sizes
-    [] Add styles to buttons
+    [OK] Add styles to buttons
 [] Part 4: Force Websocket feed to throw and error and handle it
 [] Add loading / error state
 
@@ -25,5 +25,6 @@ UI:
 [OK] Implement row showing total
 [OK] Change depth visualizer colors and alignment based on asks vs bids
 [] Change order of columns based on asks vs bids
+[] Add responsive view
 
 [] Move colors to variables
