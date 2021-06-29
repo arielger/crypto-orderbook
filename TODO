@@ -12,9 +12,9 @@ Data:
 [OK] Implement connection with WebSocket
 [OK] Process first snapshot of data
 [OK] Process following orderbook's deltas
-[OK] Part 2: Change grouping based on market ticket size
+[OK] Part 2: Change grouping based on market tick size
 [] Part 3: Subscribe to different market (review grouping)
-    [] Add variable ticket sizes
+    [OK] Add variable tick sizes
     [] Add styles to buttons
 [] Part 4: Force Websocket feed to throw and error and handle it
 [] Add loading / error state

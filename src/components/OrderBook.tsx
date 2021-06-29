@@ -12,22 +12,33 @@ import classes from "./OrderBook.module.css";
 
 import { Markets, ConnectionStatusEnum } from "../types";
 
+const tickSizesByMarket = {
+  [Markets.PI_XBTUSD]: [0.5, 1, 2.5],
+  [Markets.PI_ETHUSD]: [0.05, 0.1, 0.25],
+};
+
 export default function OrderBook() {
-  const [ticketSize, setTicketSize] = useState(0.5);
   const [selectedMarket, setSelectedMarket] = useState<Markets>(
     Markets.PI_XBTUSD
   );
+  const tickSizes = tickSizesByMarket[selectedMarket];
+  const [tickSize, setTickSize] = useState(tickSizes[0]);
   const { connectionStatus, bids, asks } = useBookConnection({
-    ticketSize,
+    tickSize,
     selectedMarket,
   });
 
   const handleToggleFeed = () => {
-    setSelectedMarket((currentSelectedMarket) =>
-      currentSelectedMarket === Markets.PI_XBTUSD
-        ? Markets.PI_ETHUSD
-        : Markets.PI_XBTUSD
-    );
+    setSelectedMarket((currentSelectedMarket) => {
+      const newMarket =
+        currentSelectedMarket === Markets.PI_XBTUSD
+          ? Markets.PI_ETHUSD
+          : Markets.PI_XBTUSD;
+
+      setTickSize(tickSizesByMarket[newMarket][0]);
+
+      return newMarket;
+    });
   };
 
   const isLoadingData = [
@@ -39,17 +50,19 @@ export default function OrderBook() {
     <div>
       <div className={classes.container}>
         <div className={classes.header}>
-          <h1 className={classes.title}>Order Book</h1>
+          <h1 className={classes.title}>Order Book ({selectedMarket})</h1>
           <select
-            value={ticketSize}
-            onChange={(e) => setTicketSize(Number(e.target.value))}
+            value={tickSize}
+            onChange={(e) => setTickSize(Number(e.target.value))}
             name="group"
             id="group"
             className={classes.groupSelect}
           >
-            <option value={0.5}>Group 0.5</option>
-            <option value={1}>Group 1</option>
-            <option value={2.5}>Group 2.5</option>
+            {tickSizes.map((tickSize) => (
+              <option key={tickSize} value={tickSize}>
+                Group {tickSize}
+              </option>
+            ))}
           </select>
         </div>
         <div className={classes.tablesContainer}>

@@ -61,21 +61,21 @@ export function handleDeltas(
 
 export function processOrdersOutput(
   orders: OrdersObj,
-  ticketSize: number
+  tickSize: number
 ): Order[] {
-  const ordersByTicketSize: OrdersObj = {};
+  const ordersByTickSize: OrdersObj = {};
 
   for (const [price, size] of Object.entries(orders)) {
     // Multiply indexes by 100 to use integer indices in the object instead of decimals
     // and preserve ordering when traversing
     // https://2ality.com/2015/10/property-traversal-order-es6.html
-    const roundedPrice = roundToNearest(Number(price), ticketSize) * 100;
-    ordersByTicketSize[roundedPrice] = ordersByTicketSize[roundedPrice]
-      ? ordersByTicketSize[roundedPrice] + size
+    const roundedPrice = roundToNearest(Number(price), tickSize) * 100;
+    ordersByTickSize[roundedPrice] = ordersByTickSize[roundedPrice]
+      ? ordersByTickSize[roundedPrice] + size
       : size;
   }
 
-  return Object.entries(ordersByTicketSize).map(([price, size]) => [
+  return Object.entries(ordersByTickSize).map(([price, size]) => [
     Number(price) / 100,
     size,
   ]);
@@ -87,10 +87,10 @@ const initialBookData = {
 };
 
 function useBookConnection({
-  ticketSize = 0.5,
+  tickSize = 0.5,
   selectedMarket,
 }: {
-  ticketSize: number;
+  tickSize: number;
   selectedMarket: Markets;
 }) {
   let socket = useMemo(
@@ -156,8 +156,8 @@ function useBookConnection({
 
   return {
     connectionStatus,
-    asks: processOrdersOutput(bookData.asks, ticketSize),
-    bids: processOrdersOutput(bookData.bids, ticketSize),
+    asks: processOrdersOutput(bookData.asks, tickSize),
+    bids: processOrdersOutput(bookData.bids, tickSize),
   };
 }
 
