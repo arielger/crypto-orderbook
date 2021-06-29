@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { roundDownToInterval } from "../utils";
+import { roundDownToInterval } from "../../../utils";
 
 import { Markets, ConnectionStatusEnum } from "../types";
 

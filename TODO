@@ -13,7 +13,7 @@ Data:
 [OK] Process first snapshot of data
 [OK] Process following orderbook's deltas
 [OK] Part 2: Change grouping based on market tick size
-[] Part 3: Subscribe to different market (review grouping)
+[OK] Part 3: Subscribe to different market (review grouping)
     [OK] Add variable tick sizes
     [OK] Add styles to buttons
 [] Part 4: Force Websocket feed to throw and error and handle it
@@ -24,7 +24,13 @@ UI:
 [OK] Implement table
 [OK] Implement row showing total
 [OK] Change depth visualizer colors and alignment based on asks vs bids
-[] Change order of columns based on asks vs bids
-[] Add responsive view
+[OK] Change order of columns based on asks vs bids
+[OK] Add responsive view
+[OK] Move colors to variables
 
-[] Move colors to variables
+Misc:
+[] Review architecture
+[] Review design
+[] Add readme
+[] Deploy site to Vercel
+[] Review tests

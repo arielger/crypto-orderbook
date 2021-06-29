@@ -5,7 +5,7 @@ import { IoWarningOutline } from "react-icons/io5";
 
 import useBookConnection from "../hooks/useBookConnection";
 
-import Button from "../ui/Button";
+import Button from "../../../ui/Button";
 
 import OrdersTable from "./OrdersTable";
 
