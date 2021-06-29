@@ -14,6 +14,8 @@ Data:
 [OK] Process following orderbook's deltas
 [OK] Part 2: Change grouping based on market ticket size
 [] Part 3: Subscribe to different market (review grouping)
+    [] Add variable ticket sizes
+    [] Add styles to buttons
 [] Part 4: Force Websocket feed to throw and error and handle it
 [] Add loading / error state
 

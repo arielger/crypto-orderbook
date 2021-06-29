@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { roundToNearest } from "../utils";
+
+import { Markets, ConnectionStatusEnum } from "../types";
 
 type OrdersObj = {
   [price: number]: number;
@@ -79,52 +81,81 @@ export function processOrdersOutput(
   ]);
 }
 
-function useBookConnection({ ticketSize = 0.5 }: { ticketSize: number }) {
-  let socket: WebSocket;
+const initialBookData = {
+  asks: {},
+  bids: {},
+};
 
-  const [bookData, setBookData] = useState<OrdersState>({
-    asks: {},
-    bids: {},
-  });
+function useBookConnection({
+  ticketSize = 0.5,
+  selectedMarket,
+}: {
+  ticketSize: number;
+  selectedMarket: Markets;
+}) {
+  let socket = useMemo(
+    () => new WebSocket("wss://www.cryptofacilities.com/ws/v1"),
+    []
+  );
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatusEnum>(ConnectionStatusEnum.INITIAL);
+  const [bookData, setBookData] = useState<OrdersState>(initialBookData);
+
+  function handleInitConnection() {
+    setConnectionStatus(ConnectionStatusEnum.CONNECTING);
+    socket.send(
+      JSON.stringify({
+        event: "subscribe",
+        feed: "book_ui_1",
+        product_ids: [selectedMarket],
+      })
+    );
+  }
+
+  function handleNewMessage(event) {
+    const messageData: BookMessage = JSON.parse(event.data);
+
+    if (messageData.event === "subscribed") {
+      setConnectionStatus(ConnectionStatusEnum.OPEN);
+    } else if (messageData.event === "unsubscribed") {
+      setBookData(initialBookData);
+      setConnectionStatus(ConnectionStatusEnum.INITIAL);
+      handleInitConnection();
+    } else if (messageData.event) {
+      // @TODO: Handle all possible events
+    } else if (messageData.feed === "book_ui_1_snapshot") {
+      // Initialize book data with snapshot
+      setBookData({
+        asks: processInitialOrders(messageData.asks),
+        bids: processInitialOrders(messageData.bids),
+      });
+    } else if (messageData.feed === "book_ui_1") {
+      setBookData((originalBookData) =>
+        handleDeltas(originalBookData, messageData.asks, messageData.bids)
+      );
+    }
+  }
 
   useEffect(() => {
-    socket = new WebSocket("wss://www.cryptofacilities.com/ws/v1");
+    socket.addEventListener("open", handleInitConnection);
+    socket.addEventListener("message", handleNewMessage);
 
-    socket.addEventListener("open", (event) => {
-      // Send message to start connection
+    return () => {
       socket.send(
         JSON.stringify({
-          event: "subscribe",
+          event: "unsubscribe",
           feed: "book_ui_1",
-          product_ids: ["PI_XBTUSD"],
+          product_ids: [selectedMarket],
         })
       );
-    });
 
-    socket.addEventListener("message", (event) => {
-      const messageData: BookMessage = JSON.parse(event.data);
-
-      console.log("messageData", messageData);
-
-      if (messageData.event === "subscribed") {
-        console.log("Subscribed succesfully");
-      } else if (messageData.event) {
-        // @TODO: Handle all possible events
-      } else if (messageData.feed === "book_ui_1_snapshot") {
-        // Initialize book data with snapshot
-        setBookData({
-          asks: processInitialOrders(messageData.asks),
-          bids: processInitialOrders(messageData.bids),
-        });
-      } else if (messageData.feed === "book_ui_1") {
-        setBookData((originalBookData) =>
-          handleDeltas(originalBookData, messageData.asks, messageData.bids)
-        );
-      }
-    });
-  }, []);
+      socket.removeEventListener("open", handleInitConnection);
+      socket.removeEventListener("message", handleNewMessage);
+    };
+  }, [selectedMarket]);
 
   return {
+    connectionStatus,
     asks: processOrdersOutput(bookData.asks, ticketSize),
     bids: processOrdersOutput(bookData.bids, ticketSize),
   };
