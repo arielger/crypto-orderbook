@@ -1,4 +1,4 @@
-import { handleDeltas, processOrdersOutput } from "./useBookConnection";
+import { handleDeltas, processOrdersOutput } from "./utils";
 
 describe("handleDeltas util function", () => {
   test("should remove price level if price is 0", () => {
