@@ -3,15 +3,15 @@ import { BsArrowUpDown } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { IoWarningOutline } from "react-icons/io5";
 
-import useBookConnection from "../hooks/useBookConnection";
+import useBookConnection from "../../hooks/useBookConnection";
 
-import Button from "../../../ui/Button";
+import Button from "../../../../ui/Button";
 
-import OrdersTable from "./OrdersTable";
+import OrdersTable from "../OrdersTable";
 
 import classes from "./OrderBook.module.css";
 
-import { Markets, ConnectionStatusEnum } from "../types";
+import { Markets, ConnectionStatusEnum } from "../../types";
 
 const tickSizesByMarket = {
   [Markets.PI_XBTUSD]: [0.5, 1, 2.5],
