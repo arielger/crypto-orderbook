@@ -3,7 +3,7 @@ import { useWindowWidth } from "@react-hook/window-size";
 
 import classes from "./OrdersTable.module.css";
 
-type Order = [number, number]; // [amount, price]
+import { Order } from "../../types";
 
 function addTotalToOrders(orders: Order[]) {
   let currentTotal = 0;
@@ -23,6 +23,11 @@ function addTotalToOrders(orders: Order[]) {
   };
 }
 
+const numberFormatter = new Intl.NumberFormat();
+const priceFormatter = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 2,
+});
+
 export default function OrdersTable({
   type,
   orders,
@@ -32,10 +37,6 @@ export default function OrdersTable({
 }): JSX.Element {
   const windowWidth = useWindowWidth();
 
-  const numberFormatter = new Intl.NumberFormat();
-  const priceFormatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-  });
   const isBidsTable = type === "bids";
 
   const { ordersWithTotal, tableTotal } = addTotalToOrders(orders);

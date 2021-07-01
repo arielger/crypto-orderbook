@@ -60,7 +60,7 @@
   }
 }
 
-/* @TODO: Move to UI component */
+/* @TODO: Move loading to UI component */
 .loading {
   background-color: rgba(0, 0, 0, 0.8);
   position: absolute;

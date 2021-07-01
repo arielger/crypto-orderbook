@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
-import { roundDownToInterval } from "../../../utils";
+import { roundDownToInterval } from "../../../../utils";
 
-import { Markets, ConnectionStatusEnum } from "../types";
+import { Markets, ConnectionStatusEnum, Order } from "../../types";
 
 type OrdersObj = {
   [price: number]: number;
@@ -11,8 +11,6 @@ type OrdersState = {
   asks: OrdersObj;
   bids: OrdersObj;
 };
-
-type Order = [number, number]; // [price, size]
 
 type BookMessage = {
   feed: string;

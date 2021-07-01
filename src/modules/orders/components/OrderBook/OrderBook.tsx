@@ -12,11 +12,7 @@ import OrdersTable from "../OrdersTable";
 import classes from "./OrderBook.module.css";
 
 import { Markets, ConnectionStatusEnum } from "../../types";
-
-const tickSizesByMarket = {
-  [Markets.PI_XBTUSD]: [0.5, 1, 2.5],
-  [Markets.PI_ETHUSD]: [0.05, 0.1, 0.25],
-};
+import { tickSizesByMarket } from "../../config";
 
 export default function OrderBook(): JSX.Element {
   const [selectedMarket, setSelectedMarket] = useState<Markets>(
@@ -56,7 +52,6 @@ export default function OrderBook(): JSX.Element {
             value={tickSize}
             onChange={(e) => setTickSize(Number(e.target.value))}
             name="group"
-            id="group"
             className={classes.groupSelect}
           >
             {tickSizes.map((tickSize) => (

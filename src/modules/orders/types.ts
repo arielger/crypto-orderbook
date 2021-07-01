@@ -1,3 +1,5 @@
+export type Order = [number, number]; // [price, size]
+
 export enum Markets {
   PI_XBTUSD = "PI_XBTUSD",
   PI_ETHUSD = "PI_ETHUSD",
