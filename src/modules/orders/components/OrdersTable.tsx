@@ -29,7 +29,7 @@ export default function OrdersTable({
 }: {
   type: "bids" | "asks";
   orders: Order[];
-}) {
+}): JSX.Element {
   const windowWidth = useWindowWidth();
 
   const numberFormatter = new Intl.NumberFormat();

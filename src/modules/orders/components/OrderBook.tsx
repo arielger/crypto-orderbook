@@ -18,7 +18,7 @@ const tickSizesByMarket = {
   [Markets.PI_ETHUSD]: [0.05, 0.1, 0.25],
 };
 
-export default function OrderBook() {
+export default function OrderBook(): JSX.Element {
   const [selectedMarket, setSelectedMarket] = useState<Markets>(
     Markets.PI_XBTUSD
   );

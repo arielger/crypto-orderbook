@@ -92,8 +92,13 @@ function useBookConnection({
 }: {
   tickSize: number;
   selectedMarket: Markets;
-}) {
-  let socket = useMemo(
+}): {
+  connectionStatus: ConnectionStatusEnum;
+  asks: Order[];
+  bids: Order[];
+  killFeed: () => void;
+} {
+  const socket = useMemo(
     () => new WebSocket("wss://www.cryptofacilities.com/ws/v1"),
     []
   );

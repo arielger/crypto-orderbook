@@ -29,8 +29,9 @@ UI:
 [OK] Move colors to variables
 
 Misc:
+[OK] Deploy site to Vercel (https://cryptoorderbook.vercel.app/)
+[OK] Add readme
+[OK] Configure ESLint
 [] Review architecture
 [] Review design
-[] Add readme
-[] Deploy site to Vercel
 [] Review tests

@@ -3,7 +3,7 @@ import "./App.css";
 
 import OrderBook from "./modules/orders/components/OrderBook";
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="App">
       <OrderBook />

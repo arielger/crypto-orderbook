@@ -11,8 +11,9 @@ export default function Button({
   text: string;
   icon?: JSX.Element;
   type?: "main" | "danger";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
-}) {
+}): JSX.Element {
   return (
     <button className={`${classes.button} ${classes[type]}`} {...props}>
       {icon}

@@ -1,4 +1,4 @@
-const { handleDeltas, processOrdersOutput } = require("./useBookConnection");
+import { handleDeltas, processOrdersOutput } from "./useBookConnection";
 
 describe("handleDeltas util function", () => {
   test("should remove price level if price is 0", () => {
