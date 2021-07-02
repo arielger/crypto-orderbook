@@ -54,14 +54,8 @@
   }
 }
 
-@keyframes spinner {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* @TODO: Move loading to UI component */
-.loading {
+.overlay {
   background-color: rgba(0, 0, 0, 0.8);
   position: absolute;
   top: 0;
@@ -74,14 +68,20 @@
   justify-content: center;
 }
 
-.loading svg {
-  animation: spinner 0.6s linear infinite;
-  width: 1.5rem;
-  height: 1.5rem;
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.loading span {
-  margin-top: 0.5rem;
+.overlay.loading svg {
+  animation: spinner 0.6s linear infinite;
+}
+
+.overlay svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .buttonContainer {

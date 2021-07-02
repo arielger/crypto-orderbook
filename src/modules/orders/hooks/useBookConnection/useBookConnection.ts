@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 import { Markets, ConnectionStatusEnum, Order } from "../../types";
 
@@ -31,12 +31,20 @@ function useBookConnection({
     () => new WebSocket("wss://www.cryptofacilities.com/ws/v1"),
     []
   );
-  const [connectionStatus, setConnectionStatus] =
-    useState<ConnectionStatusEnum>(ConnectionStatusEnum.INITIAL);
+  const [connectionData, setConnectionData] = useState<{
+    status: ConnectionStatusEnum;
+    market: Markets;
+  }>({
+    status: ConnectionStatusEnum.INITIAL,
+    market: selectedMarket,
+  });
   const [bookData, setBookData] = useState<OrdersState>(initialBookData);
 
-  function handleInitConnection() {
-    setConnectionStatus(ConnectionStatusEnum.CONNECTING);
+  const handleInitConnection = useCallback(() => {
+    setConnectionData({
+      status: ConnectionStatusEnum.CONNECTING,
+      market: selectedMarket,
+    });
     socket.send(
       JSON.stringify({
         event: "subscribe",
@@ -44,19 +52,32 @@ function useBookConnection({
         product_ids: [selectedMarket],
       })
     );
-  }
+  }, [selectedMarket, socket]);
 
-  function handleNewMessage(event: MessageEvent) {
+  const handleNewMessage = useCallback((event: MessageEvent) => {
     const messageData: BookMessage = JSON.parse(event.data);
 
     if (messageData.event === "subscribed") {
-      setConnectionStatus(ConnectionStatusEnum.OPEN);
+      setConnectionData((connection) => ({
+        ...connection,
+        status: ConnectionStatusEnum.OPEN,
+      }));
+    } else if (messageData.event === "subscribed_failed") {
+      setConnectionData((connection) => ({
+        ...connection,
+        status: ConnectionStatusEnum.ERROR,
+      }));
     } else if (messageData.event === "unsubscribed") {
       setBookData(initialBookData);
-      setConnectionStatus(ConnectionStatusEnum.INITIAL);
-      handleInitConnection();
-    } else if (messageData.event) {
-      // @TODO: Handle all possible events
+      setConnectionData((connection) => {
+        if (connection.status === ConnectionStatusEnum.ERROR) return connection;
+        return {
+          ...connection,
+          status: ConnectionStatusEnum.INITIAL,
+        };
+      });
+    } else if (messageData.event === "unsubscribed_failed") {
+      // @TODO: Handle unsubscribed_failed
     } else if (messageData.feed === "book_ui_1_snapshot") {
       // Initialize book data with snapshot
       setBookData({
@@ -68,32 +89,58 @@ function useBookConnection({
         handleDeltas(originalBookData, messageData.asks, messageData.bids)
       );
     }
-  }
+  }, []);
 
+  const disconnectFromSocket = useCallback(() => {
+    socket.send(
+      JSON.stringify({
+        event: "unsubscribe",
+        feed: "book_ui_1",
+        product_ids: [selectedMarket],
+      })
+    );
+  }, [selectedMarket, socket]);
+
+  const killFeed = useCallback(() => {
+    if (connectionData.status === ConnectionStatusEnum.ERROR) {
+      handleInitConnection();
+    } else {
+      disconnectFromSocket();
+      setConnectionData((connectionData) => ({
+        ...connectionData,
+        status: ConnectionStatusEnum.ERROR,
+      }));
+    }
+  }, [connectionData.status, disconnectFromSocket, handleInitConnection]);
+
+  // Handle connection and disconnection from socket
   useEffect(() => {
     socket.addEventListener("open", handleInitConnection);
     socket.addEventListener("message", handleNewMessage);
 
     return () => {
-      socket.send(
-        JSON.stringify({
-          event: "unsubscribe",
-          feed: "book_ui_1",
-          product_ids: [selectedMarket],
-        })
-      );
-
-      socket.removeEventListener("open", handleInitConnection);
-      socket.removeEventListener("message", handleNewMessage);
+      disconnectFromSocket();
     };
-  }, [selectedMarket]);
+  }, [
+    disconnectFromSocket,
+    handleInitConnection,
+    handleNewMessage,
+    selectedMarket,
+    socket,
+  ]);
 
-  function killFeed() {
-    // socket.send("ERROR");
-  }
+  // Connect to the other market when unsubscription for first feed finishes (check handleNewMessage)
+  useEffect(() => {
+    if (
+      connectionData.status === ConnectionStatusEnum.INITIAL &&
+      connectionData.market !== selectedMarket
+    ) {
+      handleInitConnection();
+    }
+  }, [connectionData, handleInitConnection, selectedMarket]);
 
   return {
-    connectionStatus,
+    connectionStatus: connectionData.status,
     asks: processOrdersOutput(bookData.asks, tickSize),
     bids: processOrdersOutput(bookData.bids, tickSize),
     killFeed,

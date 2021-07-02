@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BsArrowUpDown } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { IoWarningOutline } from "react-icons/io5";
+import { BiErrorCircle } from "react-icons/bi";
 
 import useBookConnection from "../../hooks/useBookConnection";
 
@@ -38,7 +39,8 @@ export default function OrderBook(): JSX.Element {
     });
   };
 
-  const isLoadingData = [
+  const isError = connectionStatus === ConnectionStatusEnum.ERROR;
+  const isLoading = [
     ConnectionStatusEnum.INITIAL,
     ConnectionStatusEnum.CONNECTING,
   ].includes(connectionStatus);
@@ -62,10 +64,16 @@ export default function OrderBook(): JSX.Element {
           </select>
         </div>
         <div className={classes.tablesContainer}>
-          {isLoadingData && (
-            <div className={classes.loading}>
+          {isLoading && (
+            <div className={`${classes.overlay} ${classes.loading}`}>
               <CgSpinner />
               <span>Loading orderbook data</span>
+            </div>
+          )}
+          {connectionStatus === ConnectionStatusEnum.ERROR && (
+            <div className={classes.overlay}>
+              <BiErrorCircle />
+              <span>There was an error getting the orderbook data</span>
             </div>
           )}
           <OrdersTable type="bids" orders={bids} />
@@ -74,7 +82,7 @@ export default function OrderBook(): JSX.Element {
       </div>
       <div className={classes.buttonContainer}>
         <Button
-          disabled={isLoadingData}
+          disabled={isLoading || isError}
           icon={<BsArrowUpDown />}
           text="Toggle Feed"
           onClick={handleToggleFeed}
@@ -82,7 +90,7 @@ export default function OrderBook(): JSX.Element {
         <Button
           type="danger"
           icon={<IoWarningOutline />}
-          text="Kill Feed"
+          text={isError ? "Restart feed" : "Kill Feed"}
           onClick={killFeed}
         />
       </div>

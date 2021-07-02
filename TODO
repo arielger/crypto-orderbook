@@ -16,8 +16,9 @@ Data:
 [OK] Part 3: Subscribe to different market (review grouping)
     [OK] Add variable tick sizes
     [OK] Add styles to buttons
-[] Part 4: Force Websocket feed to throw and error and handle it
-[] Add loading / error state
+[OK] Add loading state
+[OK] Part 4: Force Websocket feed to throw an error and handle it
+    [OK] Add error state
 
 UI:
 [OK] Add styles for orderbook header
@@ -32,6 +33,7 @@ Misc:
 [OK] Deploy site to Vercel (https://cryptoorderbook.vercel.app/)
 [OK] Add readme
 [OK] Configure ESLint
-[] Review architecture
-[] Review design
+[OK] Review architecture
+[OK] Review design
 [] Review tests
+[] Review performance

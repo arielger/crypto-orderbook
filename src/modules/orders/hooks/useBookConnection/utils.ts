@@ -55,6 +55,7 @@ export function processOrdersOutput(
   }
 
   return Object.entries(ordersByTickSize).map(([price, size]) => [
+    // Divide by 100 to return original price number
     Number(price) / 100,
     size,
   ]);
