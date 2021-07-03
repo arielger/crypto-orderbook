@@ -8,7 +8,7 @@
     "prettier",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "plugins": ["@typescript-eslint", "react", "prettier", "testing-library"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
