@@ -38,10 +38,13 @@ export default function OrderBook(): JSX.Element {
   };
 
   const isError = connectionStatus === ConnectionStatusEnum.ERROR;
+  const isReconnecting = connectionStatus === ConnectionStatusEnum.RECONNECTING;
   const isLoading = [
     ConnectionStatusEnum.INITIAL,
-    ConnectionStatusEnum.CONNECTING,
+    ConnectionStatusEnum.SUBSCRIBING,
+    ConnectionStatusEnum.UNSUBSCRIBING,
   ].includes(connectionStatus);
+  const isSubscribed = connectionStatus === ConnectionStatusEnum.SUBSCRIBED;
 
   return (
     <div className={classes.container}>
@@ -71,7 +74,15 @@ export default function OrderBook(): JSX.Element {
               <span>Loading orderbook data</span>
             </div>
           )}
-          {connectionStatus === ConnectionStatusEnum.ERROR && (
+          {isReconnecting && (
+            <div className={`${classes.overlay} ${classes.loading}`}>
+              <CgSpinner />
+              <span>
+                There was an error with the connection. Trying to reconnect.
+              </span>
+            </div>
+          )}
+          {isError && (
             <div className={classes.overlay}>
               <BiErrorCircle />
               <span>There was an error getting the orderbook data</span>
@@ -83,12 +94,13 @@ export default function OrderBook(): JSX.Element {
       </div>
       <div className={classes.buttonContainer}>
         <Button
-          disabled={isLoading || isError}
+          disabled={!isSubscribed}
           icon={<BsArrowUpDown />}
           text="Toggle Feed"
           onClick={handleToggleFeed}
         />
         <Button
+          disabled={!isSubscribed}
           type="danger"
           icon={<IoWarningOutline />}
           text={isError ? "Restart feed" : "Kill Feed"}

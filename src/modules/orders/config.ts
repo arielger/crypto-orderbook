@@ -6,3 +6,5 @@ export const tickSizesByMarket = {
 };
 
 export const defaultMarket = Markets.PI_XBTUSD;
+
+export const API_URL = "wss://www.cryptofacilities.com/ws/v1";

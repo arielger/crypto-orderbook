@@ -143,13 +143,10 @@ describe("OrderBook", () => {
     expect(asksOrders).toHaveLength(12);
   });
 
-  // test("should handle unexpected messages from socket", async () => {
-  //   render(<OrderBook />);
-
-  //   await setupWSInitialData();
-
-  //   ws.error();
-  // });
+  // @TODO: Ad tests for
+  // - subscribe_failed and unsubscribe_failed socket messages
+  // - close connection
+  // - error message in connection
 });
 
 export {};
